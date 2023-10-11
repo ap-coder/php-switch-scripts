@@ -1,0 +1,138 @@
+
+echo "PATH=\$PATH/usr/local/bin/" >> /home/code/.bashrc
+echo "PATH=\$(composer global config bin-dir --absolute --quiet):\$PATH" >> /home/code/.bashrc
+echo "alias ..='cd ..'" >> /home/code/.bashrc
+echo "alias c='clear'" >> /home/code/.bashrc
+echo "alias egrep='egrep --color=auto'" >> /home/code/.bashrc
+echo "alias entry='docker run -it --entrypoint bash '" >> /home/code/.bashrc
+echo "alias ex='docker exec -it'" >> /home/code/.bashrc
+echo "alias fgrep='fgrep --color=auto'" >> /home/code/.bashrc
+echo "alias grep='grep --color=auto'" >> /home/code/.bashrc
+echo "alias l.='ls -d .* --color=auto'" >> /home/code/.bashrc
+echo "alias la='exa -abghH1iS'" >> /home/code/.bashrc
+echo "alias ll='ls -al --color=auto'" >> /home/code/.bashrc
+echo "alias ls='ls --color=auto'" >> /home/code/.bashrc
+echo "alias greset='git reset --hard origin/HEAD'" >> /home/code/.bashrc
+echo "alias ps='docker ps'" >> /home/code/.bashrc
+echo "alias rst='source ~/.bashrc'" >> /home/code/.bashrc
+echo "alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'" >> /home/code/.bashrc
+echo "alias ps='docker ps'" >> /home/code/.bashrc
+echo "alias sc='sail artisan route:clear && sail artisan config:clear && sail artisan cache:clear && composer dumpauto'" >> /home/code/.bashrc
+echo "alias prune='docker system prune -a'" >> /home/code/.bashrc
+echo "alias cc='cd /home/code/codecorp_docker' " >> /home/code/.bashrc
+echo "alias chowndata='sudo chown -R www-data:www-data ./'" >> /home/code/.bashrc
+echo "alias chowncode='sudo chown -R code:code ./'" >> /home/code/.bashrc
+echo "alias chownsail='sudo chown -R sail:sail ./'" >> /home/code/.bashrc
+echo "alias gcompact='git gc --auto'" >> /home/code/.bashrc
+echo "alias ch7='sudo chmod -R 777 /home/code/ && sudo chown -R code:code /home/code'" >> /home/code/.bashrc
+
+
+
+
+echo "* Refreshing software repositories..."
+sudo apt-get update #> /dev/null
+sudo apt-get upgrade -y  #> /dev/null
+
+# Install pre-requisite packages.
+sudo apt-get install -y wget apt-transport-https software-properties-common curl unzip  gcc g++ make
+# sudo rm -rf /var/lib/apt/lists/lock
+# sudo rm -rf /var/cache/apt/pkgcache.bin
+# sudo rm -rf /var/cache/apt/srcpkgcache.bin
+
+sudo curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
+sudo apt install nodejs -y && corepack enable
+corepack prepare yarn@stable --activate
+yarn --version
+
+# Download the Microsoft repository GPG keys
+wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+# Register the Microsoft repository GPG keys
+sudo dpkg -i packages-microsoft-prod.deb
+# Update the list of products
+
+source /home/code/.bashrc
+# Enable the "universe" repositories
+sudo add-apt-repository -y universe
+# Add locate function 
+sudo yum install mlocate
+# add /mnt to PRUNEPATHS in /etc/updatedb.conf in order to avoid indexing Windows files.
+sudo nano /etc/updatedb.conf
+# sudo updatedb
+# Install PowerShell
+# sudo apt-get install -y powershell
+# Start PowerShell
+
+
+
+# Fix and run wsl host resolutionphp 
+# common vars
+wsl='/etc/wsl.conf'
+resolv='/etc/resolv.conf'
+
+# remove standard files
+rm -f $wsl
+rm -f $resolv
+
+# Create custom WSL name resolution
+cp ./dist/wsl.conf $wsl
+echo "[boot]" >> $wsl
+echo "systemd=true" >> $wsl
+cp ./dist/resolv.conf $resolv
+
+# This prevents resolv.conf from being deleted when WSL starts
+chattr +i $resolv
+
+echo 'WSL name resolution configured'
+# echo 'Restart WSL on Windows: "wsl --shutdown"'
+
+
+# IF GIT IS NEEDED UNCOMMENT LINES BELOW
+# echo "install Git for ubuntu"
+# sudo add-apt-repository ppa:git-core/ppa
+# sudo apt-get update > /dev/null
+# sudo apt-get install git -y  > /dev/null
+# echo "install Git LFS for ubuntu"
+# sudo apt-get install git-lfs -y  > /dev/null
+
+
+# INSTALL SUBLIMETEXT INTO DOCKER AND UBUNTU
+# echo "install Sublime for ubuntu"
+# wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+# sudo apt-get install apt-transport-https
+# echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+# sudo apt-get update  > /dev/null
+# sudo apt-get install sublime-text -y > /dev/null
+# echo "export EDITOR='subl -w'" >> /home/code/.bashrc
+# source /home/code/.bashrc
+
+# touch ~/.config/sublime-text-3/Packages/User/Package Control.sublime-settings
+# ADD PROJECT DIRECTORY TO SUBL
+# subl -a /home/code/codecorp_docker
+
+
+# IF YOU NEED TO REMOVE MLOCATE BECAUSE FAILED INSTALL RUN
+# sudo apt-get remove --auto-remove mlocate plocate
+# sudo apt-get purge --auto-remove mlocate plocate
+
+
+
+echo "* Refreshing software repositories..."
+sudo apt-get update > /dev/null
+sudo apt-get upgrade -y  > /dev/null
+
+# echo "installing openssh-server"
+# sudo apt-get install openssh-server > /dev/hull
+# sudo systemctl enable ssh --now
+# sudo ufw allow ssh
+# sudo ufw enable
+
+# https://www.cyberciti.biz/faq/ubuntu-linux-install-openssh-server/
+# sudo systemctl enable ssh
+# sudo systemctl start ssh
+# 
+# 
+# Configure firewall and open port 22
+# sudo ufw allow ssh
+# sudo ufw enable
+# sudo ufw status
+# man sshd_config
