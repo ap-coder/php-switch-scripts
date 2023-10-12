@@ -53,7 +53,7 @@ sudo apt-get install -y php8.0 php8.0-common php8.0-cli > /dev/null
 
 echo "* Installing PHP 8.0 extensions..."
 sudo  apt-get install -y --no-install-recommends libmagickwand-dev
-sudo apt-get install -y php8.0-bz2 php8.0-curl php8.0-gd php8.0-mbstring php8.0-mysql php8.0-opcache php8.0-readline php8.0-soap php8.0-sqlite3 php8.0-tidy php8.0-xml php8.0-xsl php8.0-zip php8.0-imagick libapache2-mod-php8.0 > /dev/null
+sudo apt-get install -y php8.0-bz2 php8.0-curl php8.0-gd php8.0-mbstring php8.0-mysql php8.0-opcache php8.0-redis php8.0-readline php8.0-soap php8.0-sqlite3 php8.0-tidy php8.0-xml php8.0-xsl php8.0-zip php8.0-imagick libapache2-mod-php8.0 > /dev/null
 
 echo "* Installing additional PHP extensions..."
 sudo apt-get install -y php-memcache php-memcached php-redis  > /dev/null
@@ -69,27 +69,32 @@ echo "* Installing additional PHP extensions..."
 sudo apt-get install -y php-memcache php-memcached php-redis  > /dev/null
 
 
-echo "installing composer"
-cd ~
-# curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
-wget -O composer-setup.php https://getcomposer.org/installer
-sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-sudo chmod +x /usr/local/bin/composer
-sudo composer self-update 
+#!/bin/bash
 
+# ... [the initial part of your script remains unchanged]
 
-# curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-
+# Check if Composer is already installed
+if command -v composer > /dev/null; then
+    echo "Composer is already installed, skipping..."
+else
+    echo "Installing Composer..."
+    cd ~
+    wget -O composer-setup.php https://getcomposer.org/installer
+    sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    sudo chmod +x /usr/local/bin/composer
+    sudo composer self-update 
+fi
+ 
 echo "* Setup complete. You may now use the 'switch-to-php-*.*.sh' scripts."
 
-# echo "Installing Rust"
-# curl https://sh.rustup.rs -sSf | sh -s -- -y
+# Check if Rust is already installed
+if command -v rustc > /dev/null; then
+    echo "Rust is already installed, skipping..."
+else
+    echo "Installing Rust..."
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+fi
 
 # bash switch-to-php-8.1.sh
-
-
-# -----------------------
-# question for you.  my local docker container is running no issues.  php and all modules are installed into wsl
-# problem is docker container does not have 
-
+ 
 
