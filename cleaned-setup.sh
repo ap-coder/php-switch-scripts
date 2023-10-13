@@ -94,4 +94,6 @@ sudo chown ubuntu:ubuntu /home/ubuntu/.bash_aliases
 sudo chown -R ubuntu:ubuntu /home/ubuntu/ /var/www/
 sudo chmod -R 755 /home/ubuntu/ /var/www/
 
+source /home/ubuntu/.bash_aliases
+source /home/ubuntu/.bashrc
 echo "The script ran successfully!"
