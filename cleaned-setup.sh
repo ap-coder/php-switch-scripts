@@ -25,9 +25,13 @@ if ! command_exists apache2; then
 fi
 
 # Using 'sudo -u ubuntu -H' for all commands related to the ubuntu user
-sudo -u ubuntu -H git clone https://github.com/ap-coder/php-switch-scripts.git /home/ubuntu/php-switch-scripts || { echo "Failed to clone repository"; exit 1; }
-sudo -u ubuntu -H bash /home/ubuntu/php-switch-scripts/setup.sh
-sudo -u ubuntu -H bash /home/ubuntu/php-switch-scripts/switch-to-php-8.1.sh
+if [ ! -d "/home/ubuntu/php-switch-scripts" ]; then
+    sudo -u ubuntu -H git clone https://github.com/ap-coder/php-switch-scripts.git /home/ubuntu/php-switch-scripts || { echo "Failed to clone repository"; exit 1; }
+    sudo -u ubuntu -H bash /home/ubuntu/php-switch-scripts/setup.sh
+    sudo -u ubuntu -H bash /home/ubuntu/php-switch-scripts/switch-to-php-8.1.sh
+else
+    echo "Repository already cloned"
+fi
 
 # Install necessary packages
 sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends libmagickwand-dev apache2 libapache2-mod-php imagemagick ghostscript-x supervisor software-properties-common unzip zip redis-server
