@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "Running as user: $(whoami)"
 
 set -euo
 
