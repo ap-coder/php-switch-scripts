@@ -26,10 +26,10 @@ if ! command_exists apache2; then
 fi
 
 # Using 'sudo -u ubuntu -H' for all commands related to the ubuntu user
-if [ ! -d "/home/ubuntu/php-switch-scripts" ]; then
-    sudo -u ubuntu -H git clone https://github.com/ap-coder/php-switch-scripts.git /home/ubuntu/php-switch-scripts || { echo "Failed to clone repository"; exit 1; }
-    sudo -u ubuntu -H bash /home/ubuntu/php-switch-scripts/setup.sh
-    sudo -u ubuntu -H bash /home/ubuntu/php-switch-scripts/switch-to-php-8.1.sh
+if [ ! -d "/home/ubuntu/php/php-switch-scripts" ]; then
+    sudo -u ubuntu -H git clone https://github.com/ap-coder/php-switch-scripts.git /home/ubuntu/php/php-switch-scripts || { echo "Failed to clone repository"; exit 1; }
+    sudo -u ubuntu -H bash /home/ubuntu/php/php-switch-scripts/setup.sh
+    sudo -u ubuntu -H bash /home/ubuntu/php/php-switch-scripts/switch-to-php-8.1.sh
 else
     echo "Repository already cloned"
 fi
@@ -65,6 +65,8 @@ EOD"
 
 sudo -u ubuntu bash -c "cat <<'EOD' >> /home/ubuntu/.bash_aliases
 alias current='cd /var/www/html/current'
+alias stage='cd /var/www/html/stage/current'
+alias develop='cd /var/www/html/develop/current'
 alias history='cd /var/www/html/releases'
 alias taillogs='cd /var/www/html/current && tail -f -n250 storage/logs/laravel'
 alias tailsuper='cd /var/www/html/current && tail -f -n250 storage/logs/worker.log'
@@ -83,7 +85,6 @@ alias lls='ls -lac'
 alias la='ls --color -lAGbh'
 alias art='php artisan'
 alias cu='composer update'
-alias tree=\"find . -print | sort -r | sed -e 's;[^/]*/;|____;g;s;____|; |;g'\"
 alias rst='source ~/.bashrc'
 alias statusall='service --status-all'
 alias superstatus='sudo systemctl status supervisor'
