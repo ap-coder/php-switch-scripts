@@ -58,9 +58,12 @@ fi
 # Start ssh-agent for ubuntu user
 sudo -u ubuntu -H bash -c 'eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa'
 
-# Bashrc and alias setup for ubuntu user
 sudo -u ubuntu bash -c "cat <<'EOD' >> /home/ubuntu/.bashrc
-export PS1='\[\e]0;\h\a\] \[\e[0;32m\][\A]\[\e[0m\] \[\e[0;35m\]REMOTE:\h\[\e[0m\] \[\e[1;31m\][PROD]\[\e[0m\]\[\e[0m\] in \[\e[1;33m\]\w\[\e[0m\] \\$ '
+get_public_ip() {
+  curl -s http://169.254.169.254/latest/meta-data/public-ipv4
+}
+PUBLIC_IP=\$(get_public_ip)
+export PS1='\\[\\e]0;\\h\\a\\] \\[\\e[0;32m\\][\\A]\\[\\e[0m\\] \\[\\e[0;35m\\]PROPINTEL REMOTE:'\"\$PUBLIC_IP\"'\\[\\e[0m\\] \\[\\e[1;31m\\][STAGE | DEV]\\[\\e[0m\\]\\[\\e[0m\\] in \\[\\e[1;33m\\]\\w\\[\\e[0m\\] \$ '
 EOD"
 
 sudo -u ubuntu bash -c "cat <<'EOD' >> /home/ubuntu/.bash_aliases
@@ -77,9 +80,6 @@ alias arestart='sudo systemctl restart apache2'
 alias restart-super='sudo supervisorctl restart all'
 alias c='clear'
 alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
 alias ls='ls -ac'
 alias lls='ls -lac'
 alias la='ls --color -lAGbh'
@@ -88,8 +88,12 @@ alias cu='composer update'
 alias rst='source ~/.bashrc'
 alias statusall='service --status-all'
 alias superstatus='sudo systemctl status supervisor'
+alias checkvhost='sudo apache2ctl configtest'
+alias rapache='sudo systemctl reload apache2'
+alias readstage='cat /etc/apache2/sites-available/api-stage.mmi.run.conf'
+alias readdevelop='cat /etc/apache2/sites-available/api-develop.mmi.run.conf'
 EOD"
-sudo timedatectl set-timezone America/Denver
+ 
 sudo chown ubuntu:ubuntu /home/ubuntu/.bashrc
 sudo chown ubuntu:ubuntu /home/ubuntu/.bash_aliases
 sudo chown -R ubuntu:ubuntu /home/ubuntu/ /var/www/
