@@ -47,7 +47,7 @@ if ! command_exists composer; then
 fi
 
 # SSH and directory setup for ubuntu user
-sudo -u ubuntu -H mkdir -p /home/ubuntu/www/html/alumalitearmor.com/public
+sudo -u ubuntu -H mkdir -p /home/ubuntu/www/html/alumilitearmor.com/public
 
 SSH_EMAIL="dev@mmi.io"
 
@@ -67,8 +67,8 @@ export PS1='\\[\\e]0;\\h\\a\\] \\[\\e[0;32m\\][\\A]\\[\\e[0m\\] \\[\\e[0;35m\\]A
 EOD"
 
 sudo -u ubuntu bash -c "cat <<'EOD' >> /home/ubuntu/.bash_aliases
-alias current='cd /var/www/html/alumalitearmor.com/current'
-alias history='cd /var/www/html/alumalitearmor.com/releases'
+alias current='cd /var/www/html/alumilitearmor.com/current'
+alias history='cd /var/www/html/alumilitearmor.com/releases'
 alias reload-apache='sudo systemctl reload apache2'
 alias restart-apache='sudo systemctl restart apache2'
 alias areload='sudo systemctl reload apache2'
@@ -86,7 +86,7 @@ alias statusall='service --status-all'
 alias superstatus='sudo systemctl status supervisor'
 alias checkvhost='sudo apache2ctl configtest'
 alias rapache='sudo systemctl reload apache2'
-alias readvhost='cat /etc/apache2/sites-available/alumalitearmor.com.conf'
+alias readvhost='cat /etc/apache2/sites-available/alumilitearmor.com.conf'
 EOD"
  
 sudo chown ubuntu:ubuntu /home/ubuntu/.bashrc
